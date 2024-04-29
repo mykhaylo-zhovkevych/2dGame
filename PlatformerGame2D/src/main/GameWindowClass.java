@@ -11,10 +11,12 @@ public class GameWindowClass {
 		
 		jframe = new JFrame(); // JFrame object
 		
-		jframe.setSize(400, 400);
+		
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // this contains integer values 
 		jframe.add(gamePanelClass);
 		jframe.setLocationRelativeTo(null); // positioning to center
+		jframe.setResizable(false);
+		jframe.pack();
 		jframe.setVisible(true); // setVisiable should be at the button
 	}
 		
