@@ -109,8 +109,13 @@ public class GameClass implements Runnable{
 			}
 		}
 		
+		public void windowsFocusLost() {
+			player.resetDirBooleans();
+		
+		}
+	
 		public Player getPlayer() {
 			return player;
 		}
-	
+
 	}

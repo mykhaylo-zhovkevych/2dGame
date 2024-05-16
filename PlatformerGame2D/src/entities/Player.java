@@ -21,8 +21,10 @@ public class Player extends Entity {
 	private int aniTick, aniIndex, aniSpeed = 25;
 	// global varibale 
 	private int playerAction = IDLE;
-	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
+//	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
+	private boolean left, up, right, down;
 	private boolean moving = false;
+	private float playerSpeed = 2.0f;
 
     public Player(float x, float y) {
         super(x, y);
@@ -30,11 +32,10 @@ public class Player extends Entity {
     }
 
     public void update() {
-        
+    	updatePos();
     	updateAnomationTick();
-
 		setAnimation();
-		updatePositionDelta();
+		
 	}
     
 
@@ -42,16 +43,8 @@ public class Player extends Entity {
     	
     	g.drawImage(animations[playerAction][aniIndex], (int)x, (int)y, 192, 120, null);
     }
-	// the method is responsible for changing the picture based on the keyboard conditions 
-	public void setDirection( int direction ) {
-		this.playerDirection = direction;
-		moving = true;
-	}
-	// private boolean moving = false; all variables declared above 
-	public void setMoving(boolean moving) {
-		this.moving = moving;
-	}
-
+	
+	
 //    this update the animation loop
 	private void updateAnomationTick() {
 		aniTick++;
@@ -71,24 +64,29 @@ public class Player extends Entity {
 			playerAction = IDLE;
 	}
 	
-	private void updatePositionDelta() {
-		if(moving) {
-			switch(playerDirection) {
-			case LEFT: 
-				x -=1;
-				break;
-			case UP: 
-				y -=1;
-				break;
-			case RIGHT: 
-				x +=1;
-				break;
-			case DOWN: 
-				y +=1;
-				break;
-			}
+	// this method is used to prevent when user hit/hold like w s or a d simultaneously at the same time 
+	// When using the booleans problem can occur that when the user exit the window the character will keep running 
+	private void updatePos() {
+		
+		moving = false;
+		
+		if(left && !right) {
+			x-=playerSpeed;
+			moving = true;
+		} else if (right && !left){ 
+			x+=playerSpeed;
+			moving = true;
+		}
+		
+		if(up && !down) {
+			y-=playerSpeed;
+			moving = true;
+		} else if( down && !up) {
+			y+=playerSpeed;
+			moving = true;
 		}
 	}
+	
 
     private void loadAnimations() {
         InputStream is = getClass().getResourceAsStream("/player_sprites012.png");
@@ -112,4 +110,45 @@ public class Player extends Entity {
             }
         }
     }
+    
+    public void resetDirBooleans() {
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+		
+	}
+	public boolean isLeft() {
+		return left;
+	}
+
+	public void setLeft(boolean left) {
+		this.left = left;
+	}
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setUp(boolean up) {
+		this.up = up;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
+
+	public void setRight(boolean right) {
+		this.right = right;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public void setDown(boolean down) {
+		this.down = down;
+	}
+    
+    
 }
