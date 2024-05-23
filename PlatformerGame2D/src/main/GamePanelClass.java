@@ -12,6 +12,8 @@ import inputs.KeyboardInputsClass;
 import inputs.MouseInputsClass;
 import static utilts.constantsClass.PlyerConstants.*;
 import static utilts.constantsClass.Directions.*;
+import static main.GameClass.GAME_HEIGHT;
+import static main.GameClass.GAME_WIDTH;
 
 // extending class is not the same as implementing the interface and only one class can be extended but interfaces can be extended more than one 
 	public class GamePanelClass extends JPanel{
@@ -32,10 +34,11 @@ import static utilts.constantsClass.Directions.*;
 
 	private void setPanelSize() {
 		// TODO Auto-generated method stub
-		Dimension size = new Dimension(1280, 800);
+		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
+		System.out.println("size: "+ GAME_WIDTH + ":" + GAME_HEIGHT);
 	}
 	
 

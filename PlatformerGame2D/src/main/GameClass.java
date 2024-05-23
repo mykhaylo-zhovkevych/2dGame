@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 
 import entities.Player;
+import levels.LevelManagerClass;
 
 public class GameClass implements Runnable{
 // this class is for gluing together anther classes
@@ -12,6 +13,16 @@ public class GameClass implements Runnable{
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
 	private Player player;
+	private LevelManagerClass levelmanager;
+	
+	public final static int TILES_DEFAULT_SIZE = 32;
+	public final static float SCALE = 2f;
+	public final static int TILES_IN_WIDTH = 26;
+	public final static int TILES_IN_HEIGHT = 14;
+	public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+	
 	
 // constructor in java can be taken as head method
 	public GameClass() {
@@ -25,7 +36,8 @@ public class GameClass implements Runnable{
 	
 	// method for initialising all entities events controller; 
 	private void initClasses() {
-	player = new Player(200, 200);
+	player = new Player(200, 200,  (int) (64 * SCALE), (int) (40 * SCALE));
+	levelmanager = new LevelManagerClass(this);
 	
 		}
 	
@@ -39,9 +51,11 @@ public class GameClass implements Runnable{
 // GAME LOOP 
 	public void update() {
 		player.update();
+		levelmanager.update();
 	}
 	
 	public void render(Graphics g) {
+		levelmanager.draw(g);
 		player.render(g);
 	}
 	@Override
