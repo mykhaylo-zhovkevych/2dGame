@@ -16,10 +16,10 @@ public class GameClass implements Runnable{
 	private LevelManagerClass levelmanager;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static float SCALE = 2f;
+	public final static float SCALE = 2.0f;
 	public final static int TILES_IN_WIDTH = 26;
 	public final static int TILES_IN_HEIGHT = 14;
-	public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 	
@@ -36,8 +36,9 @@ public class GameClass implements Runnable{
 	
 	// method for initialising all entities events controller; 
 	private void initClasses() {
-	player = new Player(200, 200,  (int) (64 * SCALE), (int) (40 * SCALE));
 	levelmanager = new LevelManagerClass(this);
+	player = new Player(200, 200,  (int) (64 * SCALE), (int) (40 * SCALE));
+	player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
 	
 		}
 	
@@ -50,8 +51,8 @@ public class GameClass implements Runnable{
 
 // GAME LOOP 
 	public void update() {
-		player.update();
 		levelmanager.update();
+		player.update();
 	}
 	
 	public void render(Graphics g) {

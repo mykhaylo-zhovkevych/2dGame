@@ -8,6 +8,7 @@ import static utilts.constantsClass.Directions.UP;
 //import static utilts.constantsClass.PlyerConstants.RUNNING;
 import static utilts.constantsClass.PlyerConstants.*;
 import static utilts.constantsClass.PlyerConstants.getSpriteAmount;
+import static utilts.HelpMethodsClass.CanMoveHere;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import main.GameClass;
 import utilts.LoadSaveClass;
 
 public class Player extends Entity {
@@ -28,15 +30,21 @@ public class Player extends Entity {
 	private boolean left, up, right, down;
 	private boolean moving = false, attacking = false;
 	private float playerSpeed = 2.0f;
+	private int[][] lvlData;
+	// the calculated offset from the hitbox and * Gamm.Scale because if the gave will be scaled it must also be scaled
+	private float xDrawOffset = 21 * GameClass.SCALE;
+	private float yDrawOffset = 4 * GameClass.SCALE;
+	
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations(); // Load animations during initialization
+        initHitbox(x,y,20*GameClass.SCALE,28*GameClass.SCALE);
+      
     }
 
     public void update() {
     	updatePos();
-    	updateHitbox();
     	updateAnomationTick();
 		setAnimation();
 		
@@ -44,7 +52,7 @@ public class Player extends Entity {
     
 
     public void render( Graphics g) {
-    	g.drawImage(animations[playerAction][aniIndex], (int)x, (int)y, width, height, null);
+    	g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
     	drawHitbox(g);
     }
 	
@@ -90,26 +98,37 @@ public class Player extends Entity {
 	// this method is used to prevent when user hit/hold like w s or a d simultaneously at the same time 
 	// When using the booleans problem can occur that when the user exit the window the character will keep running 
 	private void updatePos() {
-		
 		moving = false;
 		
-		if(left && !right) {
-			x-=playerSpeed;
-			moving = true;
-		} else if (right && !left){ 
-			x+=playerSpeed;
-			moving = true;
-		}
+		if(!left && !right && !up && !down)
+			return;
 		
-		if(up && !down) {
-			y-=playerSpeed;
+		float xSpeed = 0, ySpeed = 0;
+		
+		if(left && !right) 
+		xSpeed = -playerSpeed;
+			else if (right && !left) 
+			xSpeed = playerSpeed;
+				if(up && !down) 
+					ySpeed = -playerSpeed;	
+						else if( down && !up) 
+							ySpeed = playerSpeed; 
+		
+//		if(CanMoveHere(x+xSpeed, y+ySpeed, width, height, lvlData)) {
+//			this.x += xSpeed;
+//			this.y += ySpeed;
+//			moving = true;
+//			
+//		}
+				
+
+		if(CanMoveHere(hitbox.x+xSpeed, hitbox.y+ySpeed, hitbox.width, hitbox.height, lvlData)) {
+			hitbox.x += xSpeed;
+			hitbox.y += ySpeed;
 			moving = true;
-		} else if( down && !up) {
-			y+=playerSpeed;
-			moving = true;
-		}
+					
+		}				
 	}
-	
 
     private void loadAnimations() {
       
@@ -117,10 +136,15 @@ public class Player extends Entity {
             
     animations = new BufferedImage[9][6];
             for (int j = 0; j < animations.length; j++) 
-                for (int i = 0; i < animations[j].length; i++) {
+                for (int i = 0; i < animations[j].length; i++) 
                     animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
-                }
+                
             }
+ // this class is in here just temporarily
+ 	public void loadLvlData(int[][] lvlData) {
+ 		this.lvlData = lvlData;
+ 		
+ 	}
     
     public void resetDirBooleans() {
 		left = false;
@@ -164,6 +188,7 @@ public class Player extends Entity {
 	public void setDown(boolean down) {
 		this.down = down;
 	}
-    
+	
+	
     
 }
