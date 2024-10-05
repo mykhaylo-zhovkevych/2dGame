@@ -1,14 +1,14 @@
 package entities;
 
-import static utilts.constantsClass.Directions.DOWN;
-import static utilts.constantsClass.Directions.LEFT;
-import static utilts.constantsClass.Directions.RIGHT;
-import static utilts.constantsClass.Directions.UP;
-//import static utilts.constantsClass.PlyerConstants.IDLE;
-//import static utilts.constantsClass.PlyerConstants.RUNNING;
-import static utilts.constantsClass.PlyerConstants.*;
-import static utilts.constantsClass.PlyerConstants.getSpriteAmount;
-import static utilts.HelpMethodsClass.CanMoveHere;
+import static utilts.ConstantsClass.Directions.DOWN;
+import static utilts.ConstantsClass.Directions.LEFT;
+import static utilts.ConstantsClass.Directions.RIGHT;
+import static utilts.ConstantsClass.Directions.UP;
+//import static utilts.ConstantsClass.PlyerConstants.IDLE;
+//import static utilts.ConstantsClass.PlyerConstants.RUNNING;
+import static utilts.ConstantsClass.PlyerConstants.*;
+import static utilts.ConstantsClass.PlyerConstants.getSpriteAmount;
+import static utilts.HelpMethodsClass.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -27,13 +27,21 @@ public class Player extends Entity {
 	// global varibale 
 	private int playerAction = IDLE;
 //	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
-	private boolean left, up, right, down;
+	private boolean left, up, right, down, jump;
 	private boolean moving = false, attacking = false;
 	private float playerSpeed = 2.0f;
 	private int[][] lvlData;
 	// the calculated offset from the hitbox and * Gamm.Scale because if the gave will be scaled it must also be scaled
 	private float xDrawOffset = 21 * GameClass.SCALE;
 	private float yDrawOffset = 4 * GameClass.SCALE;
+	
+	// the variable is storing the speed of the auto-running
+	private float airSpeed = 0f;
+	private float gravity = 0.04f * GameClass.SCALE;
+	private float jumpSpeed = -2.25f * GameClass.SCALE;
+	// in case if the player hits the roof a new value will be assigned 
+	private float fallSpeedAfterCollision = 0.5f * GameClass.SCALE;
+	private boolean inAir = false;
 	
 
     public Player(float x, float y, int width, int height) {
@@ -99,38 +107,77 @@ public class Player extends Entity {
 	// When using the booleans problem can occur that when the user exit the window the character will keep running 
 	private void updatePos() {
 		moving = false;
-		
-		if(!left && !right && !up && !down)
+		if(jump)
+			jump();
+		// if the player is still 
+		if(!left && !right && !inAir)
 			return;
 		
-		float xSpeed = 0, ySpeed = 0;
+		float xSpeed = 0;
 		
-		if(left && !right) 
-		xSpeed = -playerSpeed;
-			else if (right && !left) 
-			xSpeed = playerSpeed;
-				if(up && !down) 
-					ySpeed = -playerSpeed;	
-						else if( down && !up) 
-							ySpeed = playerSpeed; 
+		if(left) 
+			xSpeed -= playerSpeed;
 		
-//		if(CanMoveHere(x+xSpeed, y+ySpeed, width, height, lvlData)) {
-//			this.x += xSpeed;
-//			this.y += ySpeed;
-//			moving = true;
-//			
-//		}
-				
-
-		if(CanMoveHere(hitbox.x+xSpeed, hitbox.y+ySpeed, hitbox.width, hitbox.height, lvlData)) {
-			hitbox.x += xSpeed;
-			hitbox.y += ySpeed;
-			moving = true;
+		if (right) 	
+			xSpeed += playerSpeed;
+		
+		if(!inAir) {
+			if(!IsEntityOnFloor(hitbox, lvlData))
+				inAir = true;
+		}
+		
+		
+		if(inAir) {
+			if(CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+				hitbox.y += airSpeed;
+				airSpeed += gravity;
+				// This method takes care of the left and right 
+				updateXPos(xSpeed);
+				} else {
+					hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+					// if hit the floor
+					if(airSpeed > 0) 
+						resetInAir();
+						// if hit the roof
+						else 
+							airSpeed = fallSpeedAfterCollision;
+					updateXPos(xSpeed);
 					
-		}				
+				}
+				
+		} else 
+			updateXPos(xSpeed);
+		
+		moving = true;
+			
 	}
 
-    private void loadAnimations() {
+    private void jump() {
+		if(inAir) 
+			return;
+		inAir = true;
+		airSpeed = jumpSpeed;
+		
+	}
+
+	private void resetInAir() {
+    	
+		inAir = false;
+		airSpeed = 0;
+		
+	}
+
+	private void updateXPos(float xSpeed) {
+	if	(CanMoveHere(hitbox.x+xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+		
+			hitbox.x += xSpeed;
+		} else {
+			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
+		}
+		
+	}
+
+	private void loadAnimations() {
       
     BufferedImage img = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.PLAYER_ATLAS);
             
@@ -188,7 +235,9 @@ public class Player extends Entity {
 	public void setDown(boolean down) {
 		this.down = down;
 	}
-	
+	public void setJump(boolean jump) {
+		this.jump = jump;
+	}
 	
     
 }

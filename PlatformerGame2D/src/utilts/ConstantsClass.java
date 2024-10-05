@@ -1,6 +1,6 @@
 package utilts;
 
-public class constantsClass {
+public class ConstantsClass {
 	
 	// inner class
 	public static class Directions{

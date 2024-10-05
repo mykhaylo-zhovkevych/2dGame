@@ -3,7 +3,7 @@ package inputs;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import main.GamePanelClass;
-import static utilts.constantsClass.Directions.*;
+import static utilts.ConstantsClass.Directions.*;
 
 //extending class is not the same as implementing the interface and only one class can be extended but interfaces can be extended more than one 
 public class KeyboardInputsClass implements KeyListener {
@@ -46,7 +46,11 @@ public class KeyboardInputsClass implements KeyListener {
 	    case KeyEvent.VK_D:
 	    	gamePanelClass.getGameClass().getPlayer().setRight(true);
 	        break;
-	    }
+	    case KeyEvent.VK_SPACE:
+	    	gamePanelClass.getGameClass().getPlayer().setJump(true);
+	    	break;
+		}
+	    
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -64,6 +68,9 @@ public class KeyboardInputsClass implements KeyListener {
 	    case KeyEvent.VK_D:
 	    	gamePanelClass.getGameClass().getPlayer().setRight(false);
 	        break;
-	    }
+	    case KeyEvent.VK_SPACE:
+	    	gamePanelClass.getGameClass().getPlayer().setJump(false);
+	    	break;
+	    }    
 	}
 }
