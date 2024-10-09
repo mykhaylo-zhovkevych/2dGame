@@ -35,7 +35,7 @@ public class Player extends Entity {
 	private float xDrawOffset = 21 * GameClass.SCALE;
 	private float yDrawOffset = 4 * GameClass.SCALE;
 	
-	// the variable is storing the speed of the auto-running
+	// the variables is storing the speed of the auto-running
 	private float airSpeed = 0f;
 	private float gravity = 0.04f * GameClass.SCALE;
 	private float jumpSpeed = -2.25f * GameClass.SCALE;
@@ -47,8 +47,9 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations(); // Load animations during initialization
-        initHitbox(x,y,20*GameClass.SCALE,28*GameClass.SCALE);
-      
+        initHitbox(x,y,20*GameClass.SCALE,27*GameClass.SCALE);
+        
+        
     }
 
     public void update() {
@@ -61,7 +62,7 @@ public class Player extends Entity {
 
     public void render( Graphics g) {
     	g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
-    	drawHitbox(g);
+//    	drawHitbox(g);
     }
 	
 	
@@ -88,6 +89,13 @@ public class Player extends Entity {
 			playerAction = RUNNING;
 		else
 			playerAction = IDLE;
+		
+		if(inAir) {
+			if(airSpeed < 0)
+				playerAction = JUMP;
+			else 
+				playerAction = FALLING;
+		}
 		
 		if(attacking)
 			playerAction = ATTACK_1;
@@ -190,6 +198,8 @@ public class Player extends Entity {
  // this class is in here just temporarily
  	public void loadLvlData(int[][] lvlData) {
  		this.lvlData = lvlData;
+ 		if(!IsEntityOnFloor(hitbox,lvlData))
+ 			inAir = true;
  		
  	}
     

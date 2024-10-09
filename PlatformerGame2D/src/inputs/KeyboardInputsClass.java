@@ -2,6 +2,8 @@ package inputs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import gamestates.GamestateEnum;
 import main.GamePanelClass;
 import static utilts.ConstantsClass.Directions.*;
 
@@ -33,44 +35,32 @@ public class KeyboardInputsClass implements KeyListener {
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()) {
-	    case KeyEvent.VK_W:
-	    	gamePanelClass.getGameClass().getPlayer().setUp(true);
-	        break;
-	    case KeyEvent.VK_A:
-	    	gamePanelClass.getGameClass().getPlayer().setLeft(true);
-	        break;
-	    case KeyEvent.VK_S:
-	    	gamePanelClass.getGameClass().getPlayer().setDown(true);
-	        break;
-	    case KeyEvent.VK_D:
-	    	gamePanelClass.getGameClass().getPlayer().setRight(true);
-	        break;
-	    case KeyEvent.VK_SPACE:
-	    	gamePanelClass.getGameClass().getPlayer().setJump(true);
-	    	break;
+
+		switch (GamestateEnum.state) {
+		case MENU:
+			gamePanelClass.getGameClass().getMenu().keyPressed(e);
+			break;
+		case PLAYING:
+			gamePanelClass.getGameClass().getPlaying().keyPressed(e);
+			break;
+		default:
+			break;
 		}
-	    
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		switch(e.getKeyCode()) {
-	    case KeyEvent.VK_W:
-	    	gamePanelClass.getGameClass().getPlayer().setUp(false);
-	        break;
-	    case KeyEvent.VK_A:
-	    	gamePanelClass.getGameClass().getPlayer().setLeft(false);
-	        break;
-	    case KeyEvent.VK_S:
-	    	gamePanelClass.getGameClass().getPlayer().setDown(false);
-	        break;
-	    case KeyEvent.VK_D:
-	    	gamePanelClass.getGameClass().getPlayer().setRight(false);
-	        break;
-	    case KeyEvent.VK_SPACE:
-	    	gamePanelClass.getGameClass().getPlayer().setJump(false);
-	    	break;
-	    }    
+		switch (GamestateEnum.state) {
+		case MENU:
+			gamePanelClass.getGameClass().getMenu().keyReleased(e);
+			break;
+		case PLAYING:
+			gamePanelClass.getGameClass().getPlaying().keyReleased(e);
+			break;
+		default:
+			break;
+
+		}
+   
 	}
 }

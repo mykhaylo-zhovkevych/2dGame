@@ -1,9 +1,9 @@
 package main;
 
 import java.awt.Graphics;
-
-import entities.Player;
-import levels.LevelManagerClass;
+import gamestates.GamestateEnum;
+import gamestates.MenuClass;
+import gamestates.PlayingClass;
 
 public class GameClass implements Runnable{
 // this class is for gluing together anther classes
@@ -12,8 +12,10 @@ public class GameClass implements Runnable{
 	private Thread gameThread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
-	private Player player;
-	private LevelManagerClass levelmanager;
+	
+	private PlayingClass playing;
+	private MenuClass menu;
+
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2.0f;
@@ -36,11 +38,11 @@ public class GameClass implements Runnable{
 	
 	// method for initialising all entities events controller; 
 	private void initClasses() {
-	levelmanager = new LevelManagerClass(this);
-	player = new Player(200, 200,  (int) (64 * SCALE), (int) (40 * SCALE));
-	player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
-	
-		}
+		
+		menu = new MenuClass(this);
+		playing = new PlayingClass(this);
+
+	}
 	
 	private void startGameLoop() {
 		gameThread = new Thread(this);
@@ -51,13 +53,31 @@ public class GameClass implements Runnable{
 
 // GAME LOOP 
 	public void update() {
-		levelmanager.update();
-		player.update();
+		
+		switch(GamestateEnum.state) {
+		case MENU:
+			menu.update();
+			break;
+		case PLAYING:
+			playing.update();
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public void render(Graphics g) {
-		levelmanager.draw(g);
-		player.render(g);
+
+		switch(GamestateEnum.state) {
+		case MENU:
+			menu.draw(g);			
+			break;
+		case PLAYING:
+			playing.draw(g);	
+			break;
+		default:
+			break;
+		}
 	}
 	@Override
 	public void run() {
@@ -123,14 +143,19 @@ public class GameClass implements Runnable{
 				}	
 			}
 		}
-		
-		public void windowsFocusLost() {
-			player.resetDirBooleans();
-		
+	// never care if it is in the menu 
+	public void windowsFocusLost() {
+		if (GamestateEnum.state == GamestateEnum.PLAYING) {
+			playing.getPlayer().resetDirBooleans();
 		}
 	
-		public Player getPlayer() {
-			return player;
-		}
-
 	}
+	
+	public MenuClass getMenu() {
+		return menu;
+	}
+	
+	public PlayingClass getPlaying() {
+		return playing;
+	}
+}
