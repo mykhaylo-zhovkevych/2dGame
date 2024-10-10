@@ -26,7 +26,7 @@ public class Player extends Entity {
 	private int aniTick, aniIndex, aniSpeed = 25;
 	// global varibale 
 	private int playerAction = IDLE;
-//	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
+	//	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
 	private boolean left, up, right, down, jump;
 	private boolean moving = false, attacking = false;
 	private float playerSpeed = 2.0f;
@@ -47,7 +47,7 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations(); // Load animations during initialization
-        initHitbox(x,y,20*GameClass.SCALE,27*GameClass.SCALE);
+        initHitbox(x,y,(int)(20*GameClass.SCALE),(int)(27*GameClass.SCALE));
         
         
     }

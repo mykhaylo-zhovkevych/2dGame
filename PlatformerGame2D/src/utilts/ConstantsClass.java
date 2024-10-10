@@ -1,6 +1,19 @@
 package utilts;
 
+import main.GameClass;
+
 public class ConstantsClass {
+	
+	// Class inside of the Class 
+	public static class UI {
+		public static class Buttons {
+			public static final int B_WIDTH_DEFAULT = 140;
+			public static final int B_HEIGHT_DEFAULT = 56;
+			public static final int B_WIDTH = (int) (B_WIDTH_DEFAULT * GameClass.SCALE);
+			public static final int B_HEIGHT = (int) (B_HEIGHT_DEFAULT * GameClass.SCALE);
+		}
+	}
+	
 	
 	// inner class
 	public static class Directions{
