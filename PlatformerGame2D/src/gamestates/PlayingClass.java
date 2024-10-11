@@ -14,7 +14,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 	private Player player;
 	private LevelManagerClass levelmanager;	
 	// varible responsible for showing the stop-screenn
-	private boolean paused;
+	private boolean paused = true;
 	private PauseOverlayClass pausOverlay;
 	
 	public PlayingClass(GameClass game) {
@@ -36,7 +36,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 	public void update() {
 		levelmanager.update();
 		player.update();
-		
+		pausOverlay.update();
 	}
 
 
@@ -58,21 +58,24 @@ public class PlayingClass extends StateClass implements Statemethods{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(paused)
+			pausOverlay.mousePressed(e);
 		
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(paused)
+			pausOverlay.mouseReleased(e);
 		
 	}
 
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(paused)
+			pausOverlay.mouseMoved(e);
 		
 	}
 
