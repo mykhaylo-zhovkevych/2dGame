@@ -24,9 +24,7 @@ public class GameWindowClass {
 		jframe.setResizable(false);
 		jframe.pack();
 		
-		// Set the icon with a try-catch block
         try {
-            // Load the icon image (replace "path/to/icon.png" with the correct path)
         	Image icon = ImageIO.read(getClass().getResource("/pirate-icon.png"));
             jframe.setIconImage(icon);
         } catch (Exception e) {
