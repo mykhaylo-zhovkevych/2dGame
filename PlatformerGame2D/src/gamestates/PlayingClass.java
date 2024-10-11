@@ -7,11 +7,15 @@ import java.awt.event.MouseEvent;
 import entities.Player;
 import levels.LevelManagerClass;
 import main.GameClass;
+import ui.PauseOverlayClass;
 
 public class PlayingClass extends StateClass implements Statemethods{
 
 	private Player player;
 	private LevelManagerClass levelmanager;	
+	// varible responsible for showing the stop-screenn
+	private boolean paused;
+	private PauseOverlayClass pausOverlay;
 	
 	public PlayingClass(GameClass game) {
 		super(game);
@@ -24,8 +28,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 		levelmanager = new LevelManagerClass(game);
 		player = new Player(200, 200, (int) (64 * GameClass.SCALE), (int) (40 * GameClass.SCALE));
 		player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
-		
-		}
+		pausOverlay = new PauseOverlayClass();
+	}
 
 
 	@Override
@@ -40,7 +44,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 	public void draw(Graphics g) {
 		levelmanager.draw(g);
 		player.render(g);
-		
+		pausOverlay.draw(g);
 	}
 
 
