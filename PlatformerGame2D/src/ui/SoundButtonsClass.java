@@ -41,15 +41,16 @@ public class SoundButtonsClass extends ControlButtonsClass{
 			if(mousePressed)
 				colIndex = 2;			
 	}
+	
+	public void draw(Graphics g) {
+		g.drawImage(soundImgs[rowIndex][colIndex], x, y, width, height, null);
+	}
+	
 	public void resetBools() {
 		mouseOver = false;
 		mousePressed = false;
 	}
 	
-	
-	public void draw(Graphics g) {
-		g.drawImage(soundImgs[rowIndex][colIndex], x, y, width, height, null);
-	}
 	public boolean isMouseOver() {
 		return mouseOver;
 	}

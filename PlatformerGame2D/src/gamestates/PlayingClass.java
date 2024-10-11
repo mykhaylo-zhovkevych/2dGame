@@ -28,15 +28,19 @@ public class PlayingClass extends StateClass implements Statemethods{
 		levelmanager = new LevelManagerClass(game);
 		player = new Player(200, 200, (int) (64 * GameClass.SCALE), (int) (40 * GameClass.SCALE));
 		player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
-		pausOverlay = new PauseOverlayClass();
+		pausOverlay = new PauseOverlayClass(this);
 	}
 
 
 	@Override
 	public void update() {
-		levelmanager.update();
-		player.update();
-		pausOverlay.update();
+		if(!paused) {
+			levelmanager.update();
+			player.update();
+		}
+		else {
+			pausOverlay.update();
+		}
 	}
 
 
@@ -44,6 +48,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 	public void draw(Graphics g) {
 		levelmanager.draw(g);
 		player.render(g);
+		
+		if(paused)
 		pausOverlay.draw(g);
 	}
 
@@ -99,8 +105,9 @@ public class PlayingClass extends StateClass implements Statemethods{
 	    case KeyEvent.VK_SPACE:
 	    	player.setJump(true);
 	    	break;
-	    case KeyEvent.VK_BACK_SPACE:
-	    	GamestateEnum.state = GamestateEnum.MENU;
+	    case KeyEvent.VK_ESCAPE:
+	    	paused = !paused;
+	    	break;
 		}
 		
 	}
@@ -127,6 +134,10 @@ public class PlayingClass extends StateClass implements Statemethods{
 	    	break;
 	    }  
 		
+	}
+	
+	public void unpauseGame() {
+		paused = false;
 	}
 	
 	public Player getPlayer() {

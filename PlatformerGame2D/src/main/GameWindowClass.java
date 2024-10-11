@@ -1,8 +1,11 @@
 package main;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameWindowClass {
@@ -20,8 +23,18 @@ public class GameWindowClass {
 		jframe.setLocationRelativeTo(null); // positioning to center
 		jframe.setResizable(false);
 		jframe.pack();
-		jframe.setVisible(true); // setVisiable should be at the button
 		
+		// Set the icon with a try-catch block
+        try {
+            // Load the icon image (replace "path/to/icon.png" with the correct path)
+        	Image icon = ImageIO.read(getClass().getResource("/pirate-icon.png"));
+            jframe.setIconImage(icon);
+        } catch (Exception e) {
+            System.out.println("Error: Could not load the window icon.");
+            e.printStackTrace(); 
+        }
+        
+		jframe.setVisible(true); // setVisiable should be at the button
 		jframe.addWindowFocusListener(new WindowFocusListener() {
 
 			@Override
@@ -34,7 +47,6 @@ public class GameWindowClass {
 		
 			
 			}
-			
 			
 		});
 	}
