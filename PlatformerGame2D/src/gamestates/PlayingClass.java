@@ -1,5 +1,6 @@
 package gamestates;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -8,6 +9,7 @@ import entities.Player;
 import levels.LevelManagerClass;
 import main.GameClass;
 import ui.PauseOverlayClass;
+import utilts.LoadSaveClass;
 
 public class PlayingClass extends StateClass implements Statemethods{
 
@@ -16,6 +18,15 @@ public class PlayingClass extends StateClass implements Statemethods{
 	// varible responsible for showing the stop-screenn
 	private boolean paused = true;
 	private PauseOverlayClass pausOverlay;
+	
+	private int xLvlOffset;
+	private int leftBorder = (int)(0.2 * GameClass.GAME_WIDTH);
+	private int rightBorder = (int)(0.8 * GameClass.GAME_WIDTH);
+	// returns the lvl width 
+	private int lvlTilesWide = LoadSaveClass.GetLevelData()[0].length;
+	// this variable store the actual amount of the tiles that player needs 
+	private int maxTilesOffset = lvlTilesWide - GameClass.TILES_IN_WIDTH;
+	private int maxLvlOffsetX = maxTilesOffset * GameClass.TILES_SIZE;
 	
 	public PlayingClass(GameClass game) {
 		super(game);
@@ -37,21 +48,43 @@ public class PlayingClass extends StateClass implements Statemethods{
 		if(!paused) {
 			levelmanager.update();
 			player.update();
+			checkCloseToBorder();
 		}
 		else {
 			pausOverlay.update();
 		}
 	}
 
+	// this methode that check if player position beyond any border of the lvl
+	private void checkCloseToBorder() {
+		int playerX = (int) player.getHitbox().x;
+		// if the difference more that the border that i know that player is outside of the rendered lvl
+		int diff = playerX - xLvlOffset;
+		
+		if(diff > rightBorder) {
+			xLvlOffset += diff -rightBorder;
+		}
+		else if(diff < leftBorder) {
+			xLvlOffset += diff - leftBorder;
+		}
+		if(xLvlOffset > maxLvlOffsetX)
+			xLvlOffset = maxLvlOffsetX;
+		else if(xLvlOffset < 0)
+			xLvlOffset = 0;
+	}
+
 
 	@Override
 	public void draw(Graphics g) {
-		levelmanager.draw(g);
-		player.render(g);
+		levelmanager.draw(g, xLvlOffset);
+		player.render(g, xLvlOffset);
 		
-		if(paused)
-		pausOverlay.draw(g);
-	}
+		if(paused) {
+			g.setColor(new Color(0,0,0,100));
+			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
+			pausOverlay.draw(g);
+		}
+	}	
 
 
 	public void mouseDragged(MouseEvent e) {
