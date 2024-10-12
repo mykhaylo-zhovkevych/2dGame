@@ -32,10 +32,10 @@ public abstract class Entity {
 		
 	}
 	// this method will be will take new x and y and put it to the hitbox
-//	public void updateHitbox() {
-//		hitbox.x = (int) x;
-//		hitbox.y = (int) y;
-//	}
+	//	public void updateHitbox() {
+	//		hitbox.x = (int) x;
+	//		hitbox.y = (int) y;
+	//	}
 	
 	public Rectangle2D.Float getHitbox() {
 		return hitbox;

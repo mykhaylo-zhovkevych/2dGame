@@ -29,7 +29,7 @@ public class Player extends Entity {
 	//	private int playerDirection = -1; // here is zero because if player is not moving than it should remain as it is 
 	private boolean left, up, right, down, jump;
 	private boolean moving = false, attacking = false;
-	private float playerSpeed = 1.5f * GameClass.SCALE;
+	private float playerSpeed = 1f * GameClass.SCALE;
 	private int[][] lvlData;
 	// the calculated offset from the hitbox and * Gamm.Scale because if the gave will be scaled it must also be scaled
 	private float xDrawOffset = 21 * GameClass.SCALE;

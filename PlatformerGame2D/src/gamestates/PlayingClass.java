@@ -54,6 +54,11 @@ public class PlayingClass extends StateClass implements Statemethods{
 	}
 
 
+	public void mouseDragged(MouseEvent e) {
+		if(paused)
+			pausOverlay.mouseDragged(e);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
