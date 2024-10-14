@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import entities.Player;
 import levels.LevelManagerClass;
 import main.GameClass;
 import ui.PauseOverlayClass;
 import utilts.LoadSaveClass;
+import static utilts.ConstantsClass.Environment.*;
 
 public class PlayingClass extends StateClass implements Statemethods{
 
@@ -28,12 +31,22 @@ public class PlayingClass extends StateClass implements Statemethods{
 	private int maxTilesOffset = lvlTilesWide - GameClass.TILES_IN_WIDTH;
 	private int maxLvlOffsetX = maxTilesOffset * GameClass.TILES_SIZE;
 	
+	private BufferedImage backgroundImg, bigCloud, smallCloud;
+	private int[] smallCloudsPos;
+	private Random rnd = new Random();
+	
 	public PlayingClass(GameClass game) {
 		super(game);
 		initClasses();
+		
+		backgroundImg = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.PLAYING_BG_IMG);
+		bigCloud = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.BIG_CLOUDS);
+		smallCloud = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.SMALL_CLOUDS);
+		smallCloudsPos = new int[8]; 
+		for(int i = 0; i < smallCloudsPos.length; i++)
+			smallCloudsPos[i] = (int)(70 * GameClass.SCALE) + rnd.nextInt((int)(100 * GameClass.SCALE));
 	
 	}
-
 
 	private void initClasses() {
 		levelmanager = new LevelManagerClass(game);
@@ -42,6 +55,22 @@ public class PlayingClass extends StateClass implements Statemethods{
 		pausOverlay = new PauseOverlayClass(this);
 	}
 
+	
+	@Override
+	public void draw(Graphics g) {
+		g.drawImage(backgroundImg, 0, 0, GameClass.GAME_WIDTH,GameClass.GAME_HEIGHT, null);
+		
+		drawClouds(g);
+		
+		levelmanager.draw(g, xLvlOffset);
+		player.render(g, xLvlOffset);
+		
+		if(paused) {
+			g.setColor(new Color(0,0,0,100));
+			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
+			pausOverlay.draw(g);
+		}
+	}	
 
 	@Override
 	public void update() {
@@ -54,39 +83,36 @@ public class PlayingClass extends StateClass implements Statemethods{
 			pausOverlay.update();
 		}
 	}
-
-	// this methode that check if player position beyond any border of the lvl
-	private void checkCloseToBorder() {
-		int playerX = (int) player.getHitbox().x;
-		// if the difference more that the border that i know that player is outside of the rendered lvl
-		int diff = playerX - xLvlOffset;
+	
+	private void drawClouds(Graphics g) {
 		
-		if(diff > rightBorder) {
-			xLvlOffset += diff -rightBorder;
-		}
-		else if(diff < leftBorder) {
-			xLvlOffset += diff - leftBorder;
-		}
-		if(xLvlOffset > maxLvlOffsetX)
-			xLvlOffset = maxLvlOffsetX;
-		else if(xLvlOffset < 0)
-			xLvlOffset = 0;
+		for(int i = 0; i < 3; i++)
+			g.drawImage(bigCloud, 0 + i  * BIG_CLOUD_WIDTH - (int)(xLvlOffset * 0.3),(int)(204 * GameClass.SCALE) ,BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+		
+		for(int i = 0; i < smallCloudsPos.length; i++)
+			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int)(xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
+		
 	}
 
-
-	@Override
-	public void draw(Graphics g) {
-		levelmanager.draw(g, xLvlOffset);
-		player.render(g, xLvlOffset);
-		
-		if(paused) {
-			g.setColor(new Color(0,0,0,100));
-			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
-			pausOverlay.draw(g);
+		// this methode that check if player position beyond any border of the lvl
+		private void checkCloseToBorder() {
+			int playerX = (int) player.getHitbox().x;
+			// if the difference more that the border that i know that player is outside of the rendered lvl
+			int diff = playerX - xLvlOffset;
+			
+			if(diff > rightBorder) {
+				xLvlOffset += diff -rightBorder;
+			}
+			else if(diff < leftBorder) {
+				xLvlOffset += diff - leftBorder;
+			}
+			if(xLvlOffset > maxLvlOffsetX)
+				xLvlOffset = maxLvlOffsetX;
+			else if(xLvlOffset < 0)
+				xLvlOffset = 0;
 		}
-	}	
 
-
+	
 	public void mouseDragged(MouseEvent e) {
 		if(paused)
 			pausOverlay.mouseDragged(e);
