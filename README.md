@@ -1,4 +1,5 @@
 # 2dGame
 
-![image](https://github.com/user-attachments/assets/ab1e0df5-48b1-4ef2-969f-0725c849aa9b)
+![image](https://github.com/user-attachments/assets/3c0475d3-2503-4359-b46d-709c57bc7b0d)
+
 
