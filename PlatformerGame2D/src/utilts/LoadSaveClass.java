@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import entities.CrabbyClass;
 import main.GameClass;
+import static utilts.ConstantsClass.EnemyConstants.*;
 
 // in this class will be only the static methods for not creating the objects 
 public class LoadSaveClass {
@@ -28,6 +31,7 @@ public class LoadSaveClass {
 	public static final String BIG_CLOUDS = "big_clouds.png";
 	public static final String SMALL_CLOUDS = "small_clouds.png";
 	
+	public static final String CRABBY_SPRITE = "crabby_sprite.png";
 		
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
@@ -48,6 +52,22 @@ public class LoadSaveClass {
         }
         return img;
 	}
+	
+	public static ArrayList<CrabbyClass> GetCrabs() {
+		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+		ArrayList<CrabbyClass> list = new ArrayList<>();
+		
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == CRABBY)
+					list.add(new CrabbyClass(i * GameClass.TILES_SIZE, j * GameClass.TILES_SIZE));
+			}
+		return list;
+
+	}
+	
 	public static int[][] GetLevelData() {
 		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
 		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
