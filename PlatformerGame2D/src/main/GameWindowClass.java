@@ -1,10 +1,8 @@
 package main;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -20,9 +18,9 @@ public class GameWindowClass {
 		
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // this contains integer values 
 		jframe.add(gamePanelClass);
-		jframe.setLocationRelativeTo(null); // positioning to center
 		jframe.setResizable(false);
 		jframe.pack();
+		jframe.setLocationRelativeTo(null); // positioning to center
 		
         try {
         	Image icon = ImageIO.read(getClass().getResource("/pirate-icon.png"));

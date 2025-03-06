@@ -1,19 +1,18 @@
 package gamestates;
 
+import entities.EnemyManagerClass;
+import entities.Player;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import entities.EnemyManagerClass;
-import entities.Player;
 import levels.LevelManagerClass;
 import main.GameClass;
 import ui.PauseOverlayClass;
-import utilts.LoadSaveClass;
 import static utilts.ConstantsClass.Environment.*;
+import utilts.LoadSaveClass;
 
 public class PlayingClass extends StateClass implements Statemethods{
 
@@ -80,7 +79,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 		if(!paused) {
 			levelmanager.update();
 			player.update();
-			ememyManager.update();
+			ememyManager.update(levelmanager.getCurrentLevel().getLevelData());
 			checkCloseToBorder();
 		}
 		else {

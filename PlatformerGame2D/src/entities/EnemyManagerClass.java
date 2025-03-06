@@ -1,12 +1,11 @@
 package entities;
 
+import gamestates.PlayingClass;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
-import gamestates.PlayingClass;
-import utilts.LoadSaveClass;
 import static utilts.ConstantsClass.EnemyConstants.*;
+import utilts.LoadSaveClass;
 
 // this class will take care of the functionality of the enemies like patrol attacks etc
 public class EnemyManagerClass {
@@ -28,9 +27,9 @@ public class EnemyManagerClass {
 		
 	}
 
-	public void update() {
+	public void update(int[][] lvlData) {
 		for(CrabbyClass c : crabbies)
-			c.update();
+			c.update(lvlData);
 	}
 	
 	
@@ -38,10 +37,19 @@ public class EnemyManagerClass {
 			drawCrabs(g, xLvlOffset);
 	}
 	
-	private void drawCrabs(Graphics g, int xLvlOffset) {
+	/* private void drawCrabs(Graphics g, int xLvlOffset) {
 		for(CrabbyClass c : crabbies)
 			g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], (int)c.getHitbox().x - xLvlOffset, (int) c.getHitbox().y, CRABBY_WIDTH, CRABBY_HEIGHT, null);
 		
+	} */
+
+	private void drawCrabs(Graphics g, int xLvlOffset) {
+		for (CrabbyClass c : crabbies) {
+			g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitbox().x - xLvlOffset - CRABBY_DRAWOFFSET_X, (int) c.getHitbox().y - CRABBY_DRAWOFFSET_Y, CRABBY_WIDTH,
+					CRABBY_HEIGHT, null);
+//			c.drawHitbox(g, xLvlOffset);
+		}
+
 	}
 
 	private void loadEnemyImgs() {
@@ -53,6 +61,5 @@ public class EnemyManagerClass {
 		}
 		
 	}
-	
 	
 }

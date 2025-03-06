@@ -20,10 +20,10 @@ public abstract class Entity {
 		// method that initialise the hitbox
 		
 	}
-	protected void drawHitbox(Graphics g) {
+	protected void drawHitbox(Graphics g, int xLvlOffset) {
 		// For debugging the hitbox
 		g.setColor(Color.RED);
-		g.drawRect((int)hitbox.x, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
+		g.drawRect((int)hitbox.x - xLvlOffset, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
 	}
 	
 	// the initHitbox is not in the same place as the starring position of Entity

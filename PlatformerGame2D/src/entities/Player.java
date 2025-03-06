@@ -1,23 +1,10 @@
 package entities;
 
-import static utilts.ConstantsClass.Directions.DOWN;
-import static utilts.ConstantsClass.Directions.LEFT;
-import static utilts.ConstantsClass.Directions.RIGHT;
-import static utilts.ConstantsClass.Directions.UP;
-//import static utilts.ConstantsClass.PlyerConstants.IDLE;
-//import static utilts.ConstantsClass.PlyerConstants.RUNNING;
-import static utilts.ConstantsClass.PlyerConstants.*;
-import static utilts.ConstantsClass.PlyerConstants.getSpriteAmount;
-import static utilts.HelpMethodsClass.*;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
 import main.GameClass;
+import static utilts.ConstantsClass.PlyerConstants.*;
+import static utilts.HelpMethodsClass.*;
 import utilts.LoadSaveClass;
 
 public class Player extends Entity {
@@ -62,7 +49,8 @@ public class Player extends Entity {
 
     public void render( Graphics g, int lvlOffset) {
     	g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xDrawOffset) - lvlOffset, (int)(hitbox.y - yDrawOffset), width, height, null);
-//    	drawHitbox(g);
+		// draws the hitbox
+    	drawHitbox(g, lvlOffset);
     }
 	
 	
