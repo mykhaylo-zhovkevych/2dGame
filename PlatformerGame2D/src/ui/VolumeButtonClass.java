@@ -4,9 +4,8 @@ package ui;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-import utilts.LoadSaveClass;
 import static utilts.ConstantsClass.UI.VolumeButtons.*;
+import utilts.LoadSaveClass;
 
 public class VolumeButtonClass extends ControlButtonsClass {
 
@@ -83,8 +82,5 @@ public class VolumeButtonClass extends ControlButtonsClass {
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
-	
-	
-	
 	
 }

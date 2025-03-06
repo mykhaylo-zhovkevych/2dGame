@@ -1,7 +1,6 @@
 package utilts;
 
 import java.awt.geom.Rectangle2D;
-
 import main.GameClass;
 
 public class HelpMethodsClass {
@@ -63,11 +62,15 @@ public class HelpMethodsClass {
 	
 	public static boolean IsEntityOnFloor(Rectangle2D.Float hitbox, int[][] lvlData) {
 		// Check the pixel below bottomleft and bottomright
-		if(!IsSolid(hitbox.x, hitbox.y + hitbox.height+1, lvlData))
-			if(!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height+1, lvlData))
+		if(!IsSolid(hitbox.x, hitbox.y + hitbox.height + 1, lvlData))
+			if(!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvlData))
 				return false;
 		
 		return true;
+	}
+
+	public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
+		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
 	}
 	
 }

@@ -1,12 +1,11 @@
 package ui;
 
+import gamestates.GamestateEnum;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import gamestates.GamestateEnum;
-import utilts.LoadSaveClass;
 import static utilts.ConstantsClass.UI.Buttons.*;
+import utilts.LoadSaveClass;
 
 public class ButtonsMenuClass {
 
@@ -29,12 +28,10 @@ public class ButtonsMenuClass {
 		initBounds();
 	}
 
-
 	private void initBounds() {
 		bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
 		
 	}
-
 
 	private void loadImgs() {
 		// should contain 3 images

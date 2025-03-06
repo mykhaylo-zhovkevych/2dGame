@@ -20,6 +20,9 @@ public class ConstantsClass {
 		public static final int CRABBY_WIDTH = (int)(CRABBY_WIDTH_DEFAULT * GameClass.SCALE);
 		public static final int CRABBY_HEIGHT = (int)(CRABBY_HEIGHT_DEFAULT * GameClass.SCALE);
 		
+		public static final int CRABBY_DRAWOFFSET_X = (int)(26 * GameClass.SCALE);
+		public static final int CRABBY_DRAWOFFSET_Y = (int)(9 * GameClass.SCALE);
+
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
 			switch(enemy_type) {
 			case CRABBY:
@@ -64,7 +67,6 @@ public class ConstantsClass {
 		public static class PausButtons {
 			public static final int SOUND_SIZE_DEFAULT = 42;
 			public static final int SOUND_SIZE = (int)(SOUND_SIZE_DEFAULT * GameClass.SCALE);
-			
 		}
 		
 		public static class URMButtons {
@@ -83,7 +85,6 @@ public class ConstantsClass {
 		}
 	}
 	
-	
 	// inner class
 	public static class Directions{
 		public static final int LEFT = 0;
@@ -96,7 +97,6 @@ public class ConstantsClass {
 		
 		public static final int IDLE = 0;
 		public static final int RUNNING = 1;
-		
 		public static final int JUMP = 2;
 		public static final int FALLING = 3;
 		public static final int GROUND = 4;
