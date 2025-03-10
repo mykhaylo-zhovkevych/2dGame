@@ -27,9 +27,9 @@ public class EnemyManagerClass {
 		
 	}
 
-	public void update(int[][] lvlData) {
+	public void update(int[][] lvlData, Player player) {
 		for(CrabbyClass c : crabbies)
-			c.update(lvlData);
+			c.update(lvlData, player);
 	}
 	
 	
