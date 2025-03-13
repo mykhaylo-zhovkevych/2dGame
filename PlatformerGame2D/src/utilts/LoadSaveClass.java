@@ -1,14 +1,12 @@
 package utilts;
 
+import entities.CrabbyClass;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
-import entities.CrabbyClass;
 import main.GameClass;
 import static utilts.ConstantsClass.EnemyConstants.*;
 
@@ -16,7 +14,7 @@ import static utilts.ConstantsClass.EnemyConstants.*;
 public class LoadSaveClass {
 	// the idea is that i will have one method that can take as much parameter as needed
 		
-	public static final String PLAYER_ATLAS = "player_sprites012.png";	
+	public static final String PLAYER_ATLAS = "player_sprites.png";	
 	public static final String LEVEL_ATLAS = "outside_sprites.png";	
 	//	public static final String LEVEL_ONE_DATA = "level_one_data.png";
 	public static final String LEVEL_ONE_DATA = "level_one_data_long.png";
@@ -32,7 +30,8 @@ public class LoadSaveClass {
 	public static final String SMALL_CLOUDS = "small_clouds.png";
 	
 	public static final String CRABBY_SPRITE = "crabby_sprite.png";
-		
+	public static final String STATUS_BAR = "health_power_bar.png";
+
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
 		InputStream is = LoadSaveClass.class.getResourceAsStream("/" + fileName);
