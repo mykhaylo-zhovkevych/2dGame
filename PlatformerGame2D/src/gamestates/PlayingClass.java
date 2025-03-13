@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import levels.LevelManagerClass;
 import main.GameClass;
+import ui.GameOverOverlayClass;
 import ui.PauseOverlayClass;
 import static utilts.ConstantsClass.Environment.*;
 import utilts.LoadSaveClass;
@@ -18,8 +20,10 @@ public class PlayingClass extends StateClass implements Statemethods{
 
 	private Player player;
 	private LevelManagerClass levelmanager;	
+	// The Naming is not correct, but idk how much I used that variable in the code so I will leave it just how it is 
 	private EnemyManagerClass ememyManager;
 	// varible responsible for showing the stop-screenn
+	private GameOverOverlayClass gameOverOverlay;
 	private boolean paused = true;
 	private PauseOverlayClass pausOverlay;
 	
@@ -35,6 +39,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 	private BufferedImage backgroundImg, bigCloud, smallCloud;
 	private int[] smallCloudsPos;
 	private Random rnd = new Random();
+
+	private boolean gameOver = false;
 	
 	public PlayingClass(GameClass game) {
 		super(game);
@@ -46,17 +52,17 @@ public class PlayingClass extends StateClass implements Statemethods{
 		smallCloudsPos = new int[8]; 
 		for(int i = 0; i < smallCloudsPos.length; i++)
 			smallCloudsPos[i] = (int)(70 * GameClass.SCALE) + rnd.nextInt((int)(100 * GameClass.SCALE));
-	
 	}
 
 	private void initClasses() {
 		levelmanager = new LevelManagerClass(game);
 		ememyManager = new EnemyManagerClass(this);
-		player = new Player(200, 200, (int) (64 * GameClass.SCALE), (int) (40 * GameClass.SCALE));
+		player = new Player(200, 200, (int) (64 * GameClass.SCALE), (int) (40 * GameClass.SCALE), this);
 		player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
 		pausOverlay = new PauseOverlayClass(this);
+		gameOverOverlay = new GameOverOverlayClass(this);
+		
 	}
-
 	
 	@Override
 	public void draw(Graphics g) {
@@ -71,12 +77,14 @@ public class PlayingClass extends StateClass implements Statemethods{
 			g.setColor(new Color(0,0,0,100));
 			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
 			pausOverlay.draw(g);
+		} else if (gameOver) {
+			gameOverOverlay.draw(g);
 		}
 	}	
 
 	@Override
 	public void update() {
-		if(!paused) {
+		if(!paused && !gameOver) {
 			levelmanager.update();
 			player.update();
 			ememyManager.update(levelmanager.getCurrentLevel().getLevelData(), player);
@@ -93,8 +101,25 @@ public class PlayingClass extends StateClass implements Statemethods{
 			g.drawImage(bigCloud, 0 + i  * BIG_CLOUD_WIDTH - (int)(xLvlOffset * 0.3),(int)(204 * GameClass.SCALE) ,BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 		
 		for(int i = 0; i < smallCloudsPos.length; i++)
-			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int)(xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
+			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int)(xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);	
+	}
+
+	public void resetAll() {
+		//TODO: reset playing, enemy, lvl etc
+		gameOver = false;
+		paused = false;
+		player.resetAll();
+		ememyManager.resetAllEnemies();
 		
+		
+	}
+
+	public void setGAmeOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		ememyManager.checkEnemyHit(attackBox);
 	}
 
 		// this methode that check if player position beyond any border of the lvl
@@ -117,38 +142,43 @@ public class PlayingClass extends StateClass implements Statemethods{
 
 	
 	public void mouseDragged(MouseEvent e) {
-		if(paused)
-			pausOverlay.mouseDragged(e);
+		if (!gameOver) 
+			if(paused)
+				pausOverlay.mouseDragged(e);
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1) {
-		player.setAttacking(true);
+		if (!gameOver) 
+			if(e.getButton() == MouseEvent.BUTTON1) {
+			player.setAttacking(true);
 		}
 	}
 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(paused)
-			pausOverlay.mousePressed(e);
+		if (!gameOver) 
+			if(paused)
+				pausOverlay.mousePressed(e);
 		
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(paused)
-			pausOverlay.mouseReleased(e);
+		if (!gameOver) 
+			if(paused)
+				pausOverlay.mouseReleased(e);
 		
 	}
 
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(paused)
-			pausOverlay.mouseMoved(e);
+		if (!gameOver) 
+			if(paused)
+				pausOverlay.mouseMoved(e);
 		
 	}
 
@@ -156,6 +186,9 @@ public class PlayingClass extends StateClass implements Statemethods{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
+		if (gameOver)  
+			gameOverOverlay.keyPressed(e);
+		else
 		switch(e.getKeyCode()) {
 	    case KeyEvent.VK_W:
 	    	player.setUp(true);
@@ -179,10 +212,9 @@ public class PlayingClass extends StateClass implements Statemethods{
 		
 	}
 
-
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		if (!gameOver) 
 		switch(e.getKeyCode()) {
 	    case KeyEvent.VK_W:
 	    	player.setUp(false);
@@ -214,6 +246,5 @@ public class PlayingClass extends StateClass implements Statemethods{
 	public void windowsFocusLost() {
 		player.resetDirBooleans();
 	}
-	
-	
+		
 }
