@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import gamestates.GamestateEnum;
 import gamestates.MenuClass;
 import gamestates.PlayingClass;
+import utilts.LoadSaveClass;
 
 public class GameClass implements Runnable{
 // this class is for gluing together anther classes
@@ -28,9 +29,11 @@ public class GameClass implements Runnable{
 	
 // constructor in java can be taken as head method
 	public GameClass() {
+
 		initClasses();
 		gamePanelClass = new GamePanelClass(this);
 		gameWindowClass = new GameWindowClass(gamePanelClass); // referential object of GameWindowClass
+		gamePanelClass.setFocusable(true);
 		gamePanelClass.requestFocus();
 		
 		startGameLoop();
