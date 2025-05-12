@@ -1,12 +1,11 @@
 package entities;
 
 import gamestates.PlayingClass;
-import levels.LevelClass;
-
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import levels.LevelClass;
 import static utilts.ConstantsClass.EnemyConstants.*;
 import utilts.LoadSaveClass;
 
@@ -46,14 +45,14 @@ public class EnemyManagerClass {
 	
 	/* private void drawCrabs(Graphics g, int xLvlOffset) {
 		for(CrabbyClass c : crabbies)
-			g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], (int)c.getHitbox().x - xLvlOffset, (int) c.getHitbox().y, CRABBY_WIDTH, CRABBY_HEIGHT, null);
+			g.drawImage(crabbyArr[c.getState()][c.getAniIndex()], (int)c.getHitbox().x - xLvlOffset, (int) c.getHitbox().y, CRABBY_WIDTH, CRABBY_HEIGHT, null);
 		
 	} */
 
 	private void drawCrabs(Graphics g, int xLvlOffset) {
 		for (CrabbyClass c : crabbies) 
 		if (c.isActive()) {
-			g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], 
+			g.drawImage(crabbyArr[c.getState()][c.getAniIndex()], 
 			(int) c.getHitbox().x - xLvlOffset - CRABBY_DRAWOFFSET_X + c.flipX(), 
 			(int) c.getHitbox().y - CRABBY_DRAWOFFSET_Y, 
 			CRABBY_WIDTH * c.flipW(),

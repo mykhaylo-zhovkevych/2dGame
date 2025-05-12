@@ -1,7 +1,5 @@
 package entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import main.GameClass;
 import static utilts.ConstantsClass.Directions.*;
@@ -9,14 +7,13 @@ import static utilts.ConstantsClass.EnemyConstants.*;
 
 public class CrabbyClass extends Enemy{
 
-	private Rectangle2D.Float attackBox;
 	private int attackBoxOffsetX;
 
 
 	public CrabbyClass(float x, float y) {
 		super(x, y, CRABBY_WIDTH, CRABBY_HEIGHT, CRABBY);
 		// 22 / 19 is the size of the hitbox that 
-		initHitbox(x, y, (int)(22 * GameClass.SCALE),(int)(19 * GameClass.SCALE));
+		initHitbox(22, 19 );
 		initAttackBox();
 	}
 
@@ -48,7 +45,7 @@ public class CrabbyClass extends Enemy{
 					updateInAir(lvlData);
 				else {
 
-				switch(enemyState) {
+				switch(state) {
 
 					case IDLE: 
 						newState(RUNNING);
@@ -77,11 +74,7 @@ public class CrabbyClass extends Enemy{
 				}
 			}
 
-	public void drawAttackBox(Graphics g, int xLvlOffset) {
-		g.setColor(Color.red);
-		g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
-	}
-
+	
 	// the crab is faces to the left by the default 
 	public int flipX() {
 		if(walkDir == RIGHT) 

@@ -2,24 +2,23 @@ package entities;
 
 import java.awt.geom.Rectangle2D;
 import main.GameClass;
+import static utilts.ConstantsClass.*;
 import static utilts.ConstantsClass.Directions.*;
 import static utilts.ConstantsClass.EnemyConstants.*;
 import static utilts.HelpMethodsClass.*;
 
 // Non-initializable class because it serves as a base for specific enemy classes 
 public abstract class Enemy extends Entity{
-	protected int aniIndex, enemyState, enemyType;
-	protected int aniTick, aniSpeed = 25;
+	protected int enemyType;
+
 	protected boolean firstUpdate = true;
 	protected boolean inAir;
-	protected float fallSpeed;
-	protected float gravity = 0.04f * GameClass.SCALE;
+	
 	protected float walkSpeed = 0.35f * GameClass.SCALE;
 	protected int walkDir = LEFT;
 	protected int tileY;
 	protected float attackDistance = GameClass.TILES_SIZE;
-	protected int maxHealth;
-	protected int currentHealth;
+
 	protected boolean active = true;
 	protected boolean attackChecked;
 	
@@ -27,9 +26,9 @@ public abstract class Enemy extends Entity{
 	public Enemy(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
 		this.enemyType = enemyType;
-		initHitbox(x,y,width,height);
 		maxHealth = GetMaxHealth(enemyType);
 		currentHealth = maxHealth;
+		walkSpeed = GameClass.SCALE * 0.35f;
 
 	}
 
@@ -40,13 +39,13 @@ public abstract class Enemy extends Entity{
 	}
 
 	protected void updateInAir(int[][] lvlData){
-		if(CanMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
-			hitbox.y += fallSpeed;
-			fallSpeed += gravity;
+		if(CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+			hitbox.y += airSpeed;
+			airSpeed += GRAVITY;
 		} 
 		else {
 			inAir = false;
-			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed);
+			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
 			tileY = (int) (hitbox.y / GameClass.TILES_SIZE);
 		}
 	}
@@ -96,8 +95,8 @@ protected boolean canSeePlayer(int[][] lvlData, Player player){
 		return absValue <= attackDistance;
 	}
 
-	protected void newState(int enemyState){
-		this.enemyState = enemyState;
+	protected void newState(int state){
+		this.state = state;
 		aniTick = 0;
 		aniIndex = 0;
 	}
@@ -120,24 +119,24 @@ protected boolean canSeePlayer(int[][] lvlData, Player player){
 
 	protected void updateAmimationTick() {
 		aniTick++;
-		if (aniTick >= aniSpeed) {
+		if (aniTick >= ANI_SEED) {
 			aniTick = 0;
 			aniIndex++;
-			if(aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
+			if(aniIndex >= GetSpriteAmount(enemyType, state)) {
 				aniIndex = 0;
 
 				// As soon as they are dead, they are not active anymore and should no more be updated
-				switch (enemyState) {
-					case ATTACK, HIT -> enemyState = IDLE;
+				switch (state) {
+					case ATTACK, HIT -> state = IDLE;
 					case DEAD -> active = false;
 				}
 				// worse way of doing code
 				/* 
-				if(enemyState == ATTACK)
-					enemyState = IDLE;
-				else if (enemyState == HIT) 
-					enemyState = IDLE;
-				else if (enemyState == DEAD) 
+				if(state == ATTACK)
+					state = IDLE;
+				else if (state == HIT) 
+					state = IDLE;
+				else if (state == DEAD) 
 
 					active = false; 
 				*/
@@ -163,16 +162,9 @@ protected boolean canSeePlayer(int[][] lvlData, Player player){
 		currentHealth = maxHealth;
 		newState(IDLE);
 		active = true;
-		fallSpeed = 0;
+		airSpeed = 0;
 	}
-
-	public int getAniIndex() {
-		return aniIndex;
-	}
-	public int getEnemyState() {
-		return enemyState;
-	}
-
+	
 	public boolean isActive() {
 		return active;
 	}

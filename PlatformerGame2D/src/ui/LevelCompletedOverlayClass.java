@@ -1,16 +1,16 @@
 package ui;
-import static utilts.ConstantsClass.UI.URMButtons.URM_SIZE;
-
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-
 import gamestates.GamestateEnum;
 import gamestates.PlayingClass;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import main.GameClass;
+import static utilts.ConstantsClass.UI.URMButtons.URM_SIZE;
 import utilts.LoadSaveClass;
-import static utilts.ConstantsClass.UI.URMButtons.*;
 
+// TODO: the classes need a remake, the placement of the buttons i dont like and UI also 
 public class LevelCompletedOverlayClass {
 
     private  PlayingClass playing;
@@ -40,6 +40,10 @@ public class LevelCompletedOverlayClass {
         bgY = (int) (75 * GameClass.SCALE);
     }
     public void draw(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(new Color(0, 0, 0, 150));
+        g2d.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
+
         g.drawImage(img, bgX, bgY, bgW, bgH, null);
         next.draw(g);
         menu.draw(g);

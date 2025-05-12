@@ -54,15 +54,26 @@ public class LoadSaveClass {
 	public static BufferedImage[] GetAllLevels() {
 		URL url = LoadSaveClass.class.getResource("/lvls");
 		File file = null;
-
+		/*  try {
+			file = new File(url.toURI());
+				} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		*/
 		try {
 			file = new File(url.toURI());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-
+		// URL wird in die Darei konvertiert
 		File[] files = file.listFiles();
+		// Ein neues Array, um die Dateien in einer bestimmten Reihenfolge zu speichern 
 		File[] filesSorted = new File[files.length];
+		
+		/*
+		Die doppelte Schleife ist ineffizient, da sie für jedes Element filesSorted das gesamte files Array durchusucht. 
+		Eine effezientere Methode wäre, die Dateien direkt nach dem Namen zu sortieren, z.B mit einem Comparator. 
+		 */
 
 		for (int i = 0; i < filesSorted.length; i++)
 			for (int j = 0; j < files.length; j++){
@@ -70,15 +81,20 @@ public class LoadSaveClass {
 					filesSorted[i] = files[j];
 			}
 
-
+		// Array für die Bilder erstellen: Ein Array von BufferedImage-Objekten(imgs) wird erstellt, um die geladenen Bilder zu speichern
 		BufferedImage[] imgs = new BufferedImage[filesSorted.length];
 
+		/* 
+		 * Eine Schleife iteriert über das filesStored-Array
+		 * Jede Datei wird mit ImageIO.read() geladen und in das imgs-Array gespeichert 
+		 */
 		for(int i = 0; i < imgs.length; i++)
 			try {
 				imgs[i] = ImageIO.read(filesSorted[i]);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		// Das Array imgs wird zurückgegeben, das die geladenen Bilder enthält
 		return imgs;
 
 	}

@@ -219,15 +219,11 @@ public class PlayingClass extends StateClass implements Statemethods{
 			gameOverOverlay.keyPressed(e);
 		else
 		switch(e.getKeyCode()) {
-	    case KeyEvent.VK_W:
-	    	player.setUp(true);
-	        break;
+	    
 	    case KeyEvent.VK_A:
 	    	player.setLeft(true);
 	        break;
-	    case KeyEvent.VK_S:
-	    	player.setDown(true);
-	        break;
+	    
 	    case KeyEvent.VK_D:
 	    	player.setRight(true);
 	        break;
@@ -245,15 +241,11 @@ public class PlayingClass extends StateClass implements Statemethods{
 	public void keyReleased(KeyEvent e) {
 		if (!gameOver) 
 		switch(e.getKeyCode()) {
-	    case KeyEvent.VK_W:
-	    	player.setUp(false);
-	        break;
+	    
 	    case KeyEvent.VK_A:
 	    	player.setLeft(false);
 	        break;
-	    case KeyEvent.VK_S:
-	    	player.setDown(false);
-	        break;
+	    
 	    case KeyEvent.VK_D:
 	    	player.setRight(false);
 	        break;
