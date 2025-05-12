@@ -1,17 +1,12 @@
 package utilts;
 
-import entities.CrabbyClass;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import main.GameClass;
-import static utilts.ConstantsClass.EnemyConstants.*;
 
 // in this class will be only the static methods for not creating the objects 
 public class LoadSaveClass {

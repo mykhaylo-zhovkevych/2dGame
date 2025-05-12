@@ -1,10 +1,9 @@
 package levels;
 
+import gamestates.GamestateEnum;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
-import gamestates.GamestateEnum;
 import main.GameClass;
 import utilts.LoadSaveClass;
 
