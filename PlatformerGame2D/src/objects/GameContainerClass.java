@@ -23,6 +23,8 @@ public class GameContainerClass extends GameObjectClass {
             xDrawOffset = (int) (8* GameClass.SCALE);
             yDrawOffset = (int) (5* GameClass.SCALE);
         }
+        hitbox.y += yDrawOffset + (int) (GameClass.SCALE *2);
+        hitbox.x += xDrawOffset / 2;
     }
 
     public void update(){

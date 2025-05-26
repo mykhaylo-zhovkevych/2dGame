@@ -96,6 +96,8 @@ public class Player extends Entity {
 				updateAttackBox();
 
 				updatePos();
+				if(moving)
+				checkPotionsTouched();
 				if (attacking) 
 					checkAttack();
 				updateAnomationTick();
@@ -103,11 +105,16 @@ public class Player extends Entity {
 				
 			}
 
+		private void checkPotionsTouched() {
+			playing.checkPotionsTouched(hitbox);
+		}
+
 		private void checkAttack() {
 			if (attackChecked || aniIndex != 1) 
 				return;
 			attackChecked = true;
 			playing.checkEnemyHit(attackBox);
+			playing.checkObjectHit(attackBox);
 		}
 			
 		private void updateAttackBox() {
@@ -278,7 +285,10 @@ public class Player extends Entity {
 			currentHealth = maxHealth;
 		}
 	}
-
+ 
+	public void changePower(int value) {
+		System.out.println("Power Addet"); //TODO Placeholder
+    }
 
 	private void loadAnimations() {
       
@@ -344,4 +354,5 @@ public class Player extends Entity {
 			inAir = true;
 			
 	}
+
 }

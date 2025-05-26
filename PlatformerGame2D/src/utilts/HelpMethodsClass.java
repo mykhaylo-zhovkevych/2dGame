@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 import entities.CrabbyClass;
 import main.GameClass;
-
+import objects.GameContainerClass;
+import objects.PotionClass;
+import static utilts.ConstantsClass.ObjectConstants.*;
 public class HelpMethodsClass {
 
 	// War nicht im video
@@ -135,7 +137,7 @@ public class HelpMethodsClass {
 					list.add(new CrabbyClass(i * GameClass.TILES_SIZE, j * GameClass.TILES_SIZE));
 			}
 		return list;
-	}
+		}
 
 	public static Point GetPlayerSpawn(BufferedImage img) {
 		for (int j = 0; j < img.getHeight(); j++)
@@ -147,4 +149,33 @@ public class HelpMethodsClass {
 			}
 		return new Point(1 * GameClass.TILES_SIZE, 1 * GameClass.TILES_SIZE);
 	}
+
+		public static ArrayList<PotionClass> GetPotions(BufferedImage img) {
+		ArrayList<PotionClass> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == RED_POTION || value == BLUE_POTION)
+					list.add(new PotionClass(i* GameClass.TILES_SIZE, j* GameClass.TILES_SIZE, value));
+
+			}
+		return list;
+		}
+
+		
+
+		public static ArrayList<GameContainerClass> GetContainers(BufferedImage img) {
+		ArrayList<GameContainerClass> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == BOX || value == BARREL)
+					list.add(new GameContainerClass(i* GameClass.TILES_SIZE, j* GameClass.TILES_SIZE, value));
+
+			}
+		return list;
+		}
+
 }

@@ -66,6 +66,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 
 	private void loadStartLevel() {
 		ememyManager.loadEnemies(levelmanager.getCurrentLevel());
+		objectManagerClass.loadObjects(levelmanager.getCurrentLevel());
 	}
 
 	private void calcLvlOffset() {
@@ -97,7 +98,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 		ememyManager.draw(g, xLvlOffset);
 		objectManagerClass.draw(g, xLvlOffset);
 
-		
+
 		if(paused) {
 			g.setColor(new Color(0,0,0,100));
 			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
@@ -140,7 +141,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 		lvlCompleted = false;
 		player.resetAll();
 		ememyManager.resetAllEnemies();
-		
+		objectManagerClass.resetAllObjects();
 		
 	}
 
@@ -148,8 +149,16 @@ public class PlayingClass extends StateClass implements Statemethods{
 		this.gameOver = gameOver;
 	}
 
+	public void checkObjectHit(Rectangle2D.Float attackBox){
+		objectManagerClass.checkObjectHit(attackBox);
+	}
+
 	public void checkEnemyHit(Rectangle2D.Float attackBox) {
 		ememyManager.checkEnemyHit(attackBox);
+	}
+
+	public void checkPotionsTouched(Rectangle2D.Float hitbox) {
+		objectManagerClass.checkObjectTouched(hitbox);
 	}
 
 		// this methode that check if player position beyond any border of the lvl
