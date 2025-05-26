@@ -84,7 +84,7 @@ protected boolean canSeePlayer(int[][] lvlData, Player player){
 		return false;
 
 	}
-
+	
 	private boolean isPlayerInRange(Player player){
 		int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
 		return absValue <= attackDistance * 5;
