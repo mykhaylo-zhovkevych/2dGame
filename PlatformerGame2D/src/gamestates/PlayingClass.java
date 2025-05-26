@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import levels.LevelManagerClass;
 import main.GameClass;
+import objects.ObjectManagerClass;
 import ui.GameOverOverlayClass;
 import ui.LevelCompletedOverlayClass;
 import ui.PauseOverlayClass;
@@ -28,7 +29,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 	private LevelCompletedOverlayClass levelCompletedOverlayClass;
 	private boolean paused = true;
 	private PauseOverlayClass pausOverlay;
-	
+	//added by Rudy Potions feature
+	private ObjectManagerClass objectManagerClass;
 	private int xLvlOffset;
 	private int leftBorder = (int)(0.2 * GameClass.GAME_WIDTH);
 	private int rightBorder = (int)(0.8 * GameClass.GAME_WIDTH);
@@ -73,6 +75,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 	private void initClasses() {
 		levelmanager = new LevelManagerClass(game);
 		ememyManager = new EnemyManagerClass(this);
+		//init objectmanager
+		objectManagerClass = new ObjectManagerClass(this);
 		player = new Player(200, 200, (int) (64 * GameClass.SCALE), (int) (40 * GameClass.SCALE), this);
 		player.loadLvlData(levelmanager.getCurrentLevel().getLevelData());
 		player.setSpawn(levelmanager.getCurrentLevel().getPlayerSpawn());
@@ -91,6 +95,9 @@ public class PlayingClass extends StateClass implements Statemethods{
 		levelmanager.draw(g, xLvlOffset);
 		player.render(g, xLvlOffset);
 		ememyManager.draw(g, xLvlOffset);
+		objectManagerClass.draw(g, xLvlOffset);
+
+		
 		if(paused) {
 			g.setColor(new Color(0,0,0,100));
 			g.fillRect(0, 0, GameClass.GAME_WIDTH, GameClass.GAME_HEIGHT);
@@ -110,6 +117,7 @@ public class PlayingClass extends StateClass implements Statemethods{
 			levelCompletedOverlayClass.update();
 		}else if(!gameOver){
 			levelmanager.update();
+			objectManagerClass.update();
 			player.update();
 			ememyManager.update(levelmanager.getCurrentLevel().getLevelData(), player);
 			checkCloseToBorder();
@@ -278,6 +286,10 @@ public class PlayingClass extends StateClass implements Statemethods{
 	
 	public void windowsFocusLost() {
 		player.resetDirBooleans();
+	}
+	//getter from objectmanager (potions)
+	public ObjectManagerClass getObjectManagerClass(){
+		return objectManagerClass;
 	}
 		
 }
