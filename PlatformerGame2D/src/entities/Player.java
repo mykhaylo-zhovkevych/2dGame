@@ -96,14 +96,20 @@ public class Player extends Entity {
 				updateAttackBox();
 
 				updatePos();
-				if(moving)
-				checkPotionsTouched();
+				if(moving) {
+					checkPotionsTouched();
+					checkSpikesTouiuched();
+				}
 				if (attacking) 
 					checkAttack();
 				updateAnomationTick();
 				setAnimation();
 				
 			}
+
+		private void checkSpikesTouiuched() {
+			playing.checkSpikesTouched(this);
+		}
 
 		private void checkPotionsTouched() {
 			playing.checkPotionsTouched(hitbox);
@@ -355,4 +361,7 @@ public class Player extends Entity {
 			
 	}
 
+    public void kill() {
+		currentHealth = 0;
+	}
 }

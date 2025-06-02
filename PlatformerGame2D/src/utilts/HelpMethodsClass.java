@@ -1,15 +1,15 @@
 package utilts;
 
+import entities.CrabbyClass;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
-import entities.CrabbyClass;
 import main.GameClass;
 import objects.GameContainerClass;
 import objects.PotionClass;
+import objects.SpikeClass;
 import static utilts.ConstantsClass.ObjectConstants.*;
 public class HelpMethodsClass {
 
@@ -163,7 +163,6 @@ public class HelpMethodsClass {
 		return list;
 		}
 
-		
 
 		public static ArrayList<GameContainerClass> GetContainers(BufferedImage img) {
 		ArrayList<GameContainerClass> list = new ArrayList<>();
@@ -178,4 +177,17 @@ public class HelpMethodsClass {
 		return list;
 		}
 
+		public static ArrayList<SpikeClass> GetSpikes(BufferedImage img) {
+
+			ArrayList<SpikeClass> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == SPIKE )
+					list.add(new SpikeClass(i* GameClass.TILES_SIZE, j* GameClass.TILES_SIZE, value));
+
+			}
+		return list;
+	}
 }

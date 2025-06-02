@@ -161,6 +161,10 @@ public class PlayingClass extends StateClass implements Statemethods{
 		objectManagerClass.checkObjectTouched(hitbox);
 	}
 
+	public void checkSpikesTouched(Player p) {
+		objectManagerClass.checkSpikesTouched(p);
+	}
+
 		// this methode that check if player position beyond any border of the lvl
 		private void checkCloseToBorder() {
 			int playerX = (int) player.getHitbox().x;
@@ -301,4 +305,8 @@ public class PlayingClass extends StateClass implements Statemethods{
 		return objectManagerClass;
 	}
 		
+	public LevelManagerClass getLevelManager() {
+		return levelmanager;
+	}
+
 }

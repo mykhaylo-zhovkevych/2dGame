@@ -1,20 +1,18 @@
 package levels;
 
 
+import entities.CrabbyClass;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import entities.CrabbyClass;
 import main.GameClass;
 import objects.GameContainerClass;
 import objects.PotionClass;
+import objects.SpikeClass;
 import utilts.HelpMethodsClass;
-
+import static utilts.HelpMethodsClass.GetCrabs;
 import static utilts.HelpMethodsClass.GetLevelData;
 import static utilts.HelpMethodsClass.GetPlayerSpawn;
-import static utilts.HelpMethodsClass.GetCrabs;
 
 public class LevelClass {
 
@@ -22,6 +20,7 @@ public class LevelClass {
 	private int[][] lvlData;
 	private ArrayList<CrabbyClass> crabs;
 	private ArrayList<PotionClass> potions;
+	private ArrayList<SpikeClass> spikes;
 	private ArrayList<GameContainerClass> containers;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
@@ -35,9 +34,14 @@ public class LevelClass {
 		createEnemies();
 		createPotions();
 		createContainers();
+		createSpikes();
 		calcLvlOffset();
 		calcPlayerSpawn();
 
+	}
+
+	private void createSpikes() {
+		spikes = HelpMethodsClass.GetSpikes(img);
 	}
 
 	private void createContainers() {
@@ -93,4 +97,9 @@ public class LevelClass {
 	public ArrayList<GameContainerClass> getContainers(){
 		return containers;
 	}
+
+	public ArrayList<SpikeClass> getSpikes() {
+		return spikes;
+	}
+
 }

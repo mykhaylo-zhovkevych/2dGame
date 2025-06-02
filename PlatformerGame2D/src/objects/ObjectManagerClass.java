@@ -1,5 +1,6 @@
 package objects;
 
+import entities.Player;
 import gamestates.PlayingClass;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
@@ -13,12 +14,22 @@ public class ObjectManagerClass {
 
     private PlayingClass playingClass;
     private BufferedImage[][] potionImgs, containerImgs;
+    private BufferedImage spikeImg;
     private ArrayList<PotionClass> potions;
     private ArrayList<GameContainerClass> containers;
+    private ArrayList<SpikeClass> spikes;
 
     public ObjectManagerClass(PlayingClass playingClass) {
         this.playingClass = playingClass;
         loadImgs();
+    }
+
+    public void checkSpikesTouched(Player p) {
+        for (SpikeClass s : spikes)
+        // Die Methode intersects prüft, ob die Hitbox des Spielers mit der Hitbox des Spikes kollidiert
+            if (s.getHitbox().intersects(p.getHitbox())) {
+                p.kill();
+        }
     }
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
@@ -40,7 +51,7 @@ public class ObjectManagerClass {
 
     public void checkObjectHit(Rectangle2D.Float attackbox) {
         for (GameContainerClass gc : containers)
-            if (gc.isActive()) {
+            if (gc.isActive() && !gc.doAnimation) {
                 if (gc.getHitbox().intersects(attackbox)) {
                     gc.setAnimation(true);
                     int type = 0;
@@ -58,8 +69,9 @@ public class ObjectManagerClass {
     }
 
     public void loadObjects(LevelClass newLevel) {
-        potions = newLevel.getPotions();
-        containers = newLevel.getContainers();
+        potions = new ArrayList<>(newLevel.getPotions());
+        containers = new ArrayList<>(newLevel.getContainers());
+        spikes = newLevel.getSpikes();
     }
 
     private void loadImgs() {
@@ -76,6 +88,9 @@ public class ObjectManagerClass {
         for (int j = 0; j < containerImgs.length; j++)
             for (int i = 0; i < containerImgs[j].length; i++)
                 containerImgs[j][i] = containerSprite.getSubimage(40 * i, 30 * j, 40, 30);
+        
+        spikeImg = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.TRAP_ATLAS);
+    
     }
 
     public void update() {
@@ -91,7 +106,20 @@ public class ObjectManagerClass {
     public void draw(Graphics g, int xLvlOffset) {
         drawPotions(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
+        drawSpikes(g, xLvlOffset);
     }
+    private void drawSpikes(Graphics g, int xLvlOffset) {
+        for (SpikeClass s : spikes) 
+            g.drawImage(
+                spikeImg,
+                (int) (s.getHitbox().x - xLvlOffset),
+                (int) (s.getHitbox().y - s.getyDrawOffset()),
+                SPIKE_WIDTH,
+                SPIKE_HEIGHT,
+                null
+            );
+    }
+    
 
     private void drawContainers(Graphics g, int xLvlOffset) {
         for (GameContainerClass gc : containers)
@@ -128,6 +156,12 @@ public class ObjectManagerClass {
     }
 
     public void resetAllObjects() {
+
+        // this is to prevent ArrayIndexOutOfBoundsException, because when a game is reseted or new level is loaded old objects are not removed
+        // System.out.println("Size of arrays: " + potions.size() + " - " + containers.size());
+        loadObjects(playingClass.getLevelManager().getCurrentLevel());
+        // System.out.println("Size of arrays after: " + potions.size() + " - " + containers.size());
+
         for (PotionClass p : potions)
             p.reset();
 
