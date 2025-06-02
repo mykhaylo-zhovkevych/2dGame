@@ -4,34 +4,36 @@ import main.GameClass;
 
 public class PotionClass extends GameObjectClass {
 
-    private float hoverOffset;
-    private int maxHoverOffset, hoverDir = 1;
-    public PotionClass(int x, int y, int objType) {
-        super(x, y, objType);
-        doAnimation = true;
-        initHitbox(7, 14);
-        xDrawOffset = (int)(3 * GameClass.SCALE);
-        yDrawOffset = (int)(2 * GameClass.SCALE);
+private float hoverOffset;
+private int maxHoverOffset, hoverDir = 1;
 
-        maxHoverOffset = (int) (10 * GameClass.SCALE);
+	public PotionClass(int x, int y, int objType) {
+		super(x, y, objType);
+		doAnimation = true;
 
-    }
+		initHitbox(7, 14);
 
-    public void update() {
-        updateAmimationTick();
-        updateHover();
-    }
+		xDrawOffset = (int) (3 * GameClass.SCALE);
+		yDrawOffset = (int) (2 * GameClass.SCALE);
 
-    private void updateHover() {
-        hoverOffset += (0.075f * GameClass.SCALE * hoverDir);
-        if(hoverOffset >= maxHoverOffset)
-        hoverDir = -1;
-        else if(hoverOffset < 0)
-        hoverDir =1;
+		maxHoverOffset = (int) (10 * GameClass.SCALE);
+	}
 
-        hitbox.y = y + hoverOffset;
-    }
+	public void update() {
+		updateAmimationTick();
+		updateHover();
+	}
 
+	private void updateHover() {
+		hoverOffset += (0.075f * GameClass.SCALE * hoverDir);
+
+		if (hoverOffset >= maxHoverOffset)
+			hoverDir = -1;
+		else if (hoverOffset < 0)
+			hoverDir = 1;
+
+		hitbox.y = y + hoverOffset;
+	}
  
     
 }

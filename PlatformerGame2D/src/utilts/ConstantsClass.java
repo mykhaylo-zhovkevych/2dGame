@@ -23,8 +23,8 @@ public class ConstantsClass {
 
 		public static final int POTION_WIDTH_DEFAULT = 12;
 		public static final int POTION_HIGHT_DEFAULT = 16;
-		public static final int POTION_WIDTH = (int) (GameClass.SCALE * CONTAINER_WIDTH_DEFAULT);
-		public static final int POTION_HEIGHT = (int) (GameClass.SCALE * CONTAINER_HEIGHT_DEFAULT);
+		public static final int POTION_WIDTH = (int) (GameClass.SCALE * POTION_WIDTH_DEFAULT);
+		public static final int POTION_HEIGHT = (int) (GameClass.SCALE * POTION_HIGHT_DEFAULT);
 
 		public static int GetSpriteAmount(int object_type) {
 			switch (object_type) {

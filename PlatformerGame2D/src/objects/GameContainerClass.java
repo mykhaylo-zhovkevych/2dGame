@@ -1,7 +1,6 @@
 package objects;
-import static utilts.ConstantsClass.ObjectConstants.*;
-
 import main.GameClass;
+import static utilts.ConstantsClass.ObjectConstants.*;
 public class GameContainerClass extends GameObjectClass {
 
     public GameContainerClass(int x, int y, int objType) {
@@ -14,16 +13,16 @@ public class GameContainerClass extends GameObjectClass {
         if(objType == BOX){
             initHitbox(25, 18);
 
-            xDrawOffset = (int) (7* GameClass.SCALE);
-            yDrawOffset = (int) (12* GameClass.SCALE);
+            xDrawOffset = (int) (7 * GameClass.SCALE);
+            yDrawOffset = (int) (12 * GameClass.SCALE);
 
         } else{
             initHitbox(23, 25);
 
-            xDrawOffset = (int) (8* GameClass.SCALE);
-            yDrawOffset = (int) (5* GameClass.SCALE);
+            xDrawOffset = (int) (8 * GameClass.SCALE);
+            yDrawOffset = (int) (5 * GameClass.SCALE);
         }
-        hitbox.y += yDrawOffset + (int) (GameClass.SCALE *2);
+        hitbox.y += yDrawOffset + (int) (GameClass.SCALE * 2);
         hitbox.x += xDrawOffset / 2;
     }
 
