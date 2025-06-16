@@ -65,7 +65,7 @@ public class ExerciseMainWindow extends JFrame {
       
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new SolutionMainWindow();
+                new ExerciseMainWindow();
             }
         });
     }
