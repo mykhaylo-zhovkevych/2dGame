@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.GameClass;
+import objects.CannonClass;
 import objects.GameContainerClass;
 import objects.PotionClass;
 import objects.SpikeClass;
@@ -22,6 +23,7 @@ public class LevelClass {
 	private ArrayList<PotionClass> potions;
 	private ArrayList<SpikeClass> spikes;
 	private ArrayList<GameContainerClass> containers;
+	private ArrayList<CannonClass> cannons;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
@@ -35,9 +37,14 @@ public class LevelClass {
 		createPotions();
 		createContainers();
 		createSpikes();
+		createCannons();
 		calcLvlOffset();
 		calcPlayerSpawn();
 
+	}
+
+	private void createCannons() {
+		cannons = HelpMethodsClass.GetCannonClasses(img);
 	}
 
 	private void createSpikes() {
@@ -100,6 +107,10 @@ public class LevelClass {
 
 	public ArrayList<SpikeClass> getSpikes() {
 		return spikes;
+	}
+
+	public ArrayList<CannonClass> getCannons() {
+		return cannons;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.GameClass;
+import objects.CannonClass;
 import objects.GameContainerClass;
 import objects.PotionClass;
 import objects.SpikeClass;
@@ -92,10 +93,29 @@ public class HelpMethodsClass {
 			return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
 	}
 
-	public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData){
-		for(int i = 0; i < xEnd - xStart; i++){
-			if(IsTileSolid(xStart + i, y, lvlData))
+	public static boolean CanCannonSeePlayer(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile) {
+		int firstXTile = (int)(firstHitbox.x / GameClass.TILES_SIZE);
+		int secondXTile = (int)(secondHitbox.x / GameClass.TILES_SIZE);
+
+		if(firstXTile > secondXTile)
+			return IsAllTilesClear(secondXTile, firstXTile, yTile, lvlData);
+		else 
+			return IsAllTilesClear(firstXTile, secondXTile, yTile, lvlData);
+	}
+
+	public static boolean IsAllTilesClear(int xStart, int xEnd, int y, int[][] lvlData) {
+		for (int i = 0; i < xEnd - xStart; i++) 
+			if (IsTileSolid(xStart + i, y, lvlData))
 				return false;
+			return true;
+		
+	}
+
+	public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData){
+		
+		if (IsAllTilesClear(xStart, xEnd, y, lvlData))
+		for(int i = 0; i < xEnd - xStart; i++){
+			
 			if(!IsTileSolid(xStart + i, y + 1, lvlData))
 				return false;
 		}
@@ -103,7 +123,7 @@ public class HelpMethodsClass {
 	}
 
 	public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox,
-	 Rectangle2D.Float secondHitbox, int yTile){
+	 Rectangle2D.Float secondHitbox, int yTile) {
 		int firstXTile = (int)(firstHitbox.x / GameClass.TILES_SIZE);
 		int secondXTile = (int)(secondHitbox.x / GameClass.TILES_SIZE);
 
@@ -178,16 +198,30 @@ public class HelpMethodsClass {
 		}
 
 		public static ArrayList<SpikeClass> GetSpikes(BufferedImage img) {
-
 			ArrayList<SpikeClass> list = new ArrayList<>();
-		for (int j = 0; j < img.getHeight(); j++)
-			for (int i = 0; i < img.getWidth(); i++) {
-				Color color = new Color(img.getRGB(i, j));
-				int value = color.getBlue();
+			for (int j = 0; j < img.getHeight(); j++)
+				for (int i = 0; i < img.getWidth(); i++) {
+					Color color = new Color(img.getRGB(i, j));
+					int value = color.getBlue();
 				if (value == SPIKE )
 					list.add(new SpikeClass(i* GameClass.TILES_SIZE, j* GameClass.TILES_SIZE, value));
 
 			}
 		return list;
 	}
+
+	public static ArrayList<CannonClass> GetCannonClasses(BufferedImage img) {
+
+			ArrayList<CannonClass> list = new ArrayList<>();
+			for (int j = 0; j < img.getHeight(); j++)
+				for (int i = 0; i < img.getWidth(); i++) {
+					Color color = new Color(img.getRGB(i, j));
+					int value = color.getBlue();
+				if (value == CANNON_LEFT || value == CANNON_RIGHT)
+					list.add(new CannonClass(i* GameClass.TILES_SIZE, j* GameClass.TILES_SIZE, value));
+
+			}
+		return list;
+	}
+
 }

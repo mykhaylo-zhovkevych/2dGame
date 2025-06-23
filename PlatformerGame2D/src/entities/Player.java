@@ -54,6 +54,8 @@ public class Player extends Entity {
 	private boolean attackChecked;
 	private PlayingClass playing;
 
+	private int tileY = 0;
+
 
     public Player() {
         super(0, 0, 0, 0);
@@ -99,6 +101,7 @@ public class Player extends Entity {
 				if(moving) {
 					checkPotionsTouched();
 					checkSpikesTouiuched();
+					tileY = (int)(hitbox.y / GameClass.TILES_SIZE);
 				}
 				if (attacking) 
 					checkAttack();
@@ -364,4 +367,10 @@ public class Player extends Entity {
     public void kill() {
 		currentHealth = 0;
 	}
+
+	public int getTileY() {
+
+	return tileY;
+}
+
 }
