@@ -1,17 +1,25 @@
 package utilts;
 
-import entities.CrabbyClass;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import entities.CrabbyClass;
 import main.GameClass;
 import objects.CannonClass;
 import objects.GameContainerClass;
 import objects.PotionClass;
+import objects.ProjecttileClass;
 import objects.SpikeClass;
-import static utilts.ConstantsClass.ObjectConstants.*;
+import static utilts.ConstantsClass.ObjectConstants.BARREL;
+import static utilts.ConstantsClass.ObjectConstants.BLUE_POTION;
+import static utilts.ConstantsClass.ObjectConstants.BOX;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_LEFT;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_RIGHT;
+import static utilts.ConstantsClass.ObjectConstants.RED_POTION;
+import static utilts.ConstantsClass.ObjectConstants.SPIKE;
 public class HelpMethodsClass {
 
 	// War nicht im video
@@ -222,6 +230,12 @@ public class HelpMethodsClass {
 
 			}
 		return list;
+	}
+
+	public static boolean IsProjectileHittingLevel (ProjecttileClass p, int[][] lvlData) {
+		
+		return IsSolid(p.getHitbox().x + p.getHitbox().width / 2, p.getHitbox().y + p.getHitbox().height / 2, lvlData);
+
 	}
 
 }

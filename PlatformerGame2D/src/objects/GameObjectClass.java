@@ -3,9 +3,14 @@ package objects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+
 import main.GameClass;
 import static utilts.ConstantsClass.ANI_SEED;
-import static utilts.ConstantsClass.ObjectConstants.*;
+import static utilts.ConstantsClass.ObjectConstants.BARREL;
+import static utilts.ConstantsClass.ObjectConstants.BOX;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_LEFT;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_RIGHT;
+import static utilts.ConstantsClass.ObjectConstants.GetSpriteAmount;
 
 public class GameObjectClass {
     
@@ -95,4 +100,8 @@ public class GameObjectClass {
 	public int getAniIndex() {
 		return aniIndex;
 	}   
+
+	public int getAniTick() {
+		return aniTick;
+	}
 }

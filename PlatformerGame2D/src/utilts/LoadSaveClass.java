@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+
 import javax.imageio.ImageIO;
 
 // in this class will be only the static methods for not creating the objects 
@@ -33,6 +34,7 @@ public class LoadSaveClass {
 	public static final String CONTAINER_ATLAS = "objects_sprites.png";
 	public static final String TRAP_ATLAS = "trap_atlas.png";
 	public static final String CANNON_ATLAS = "cannon_atlas.png";
+	public static final String CANNON_BALL = "ball.png";
 
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {

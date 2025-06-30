@@ -1,15 +1,32 @@
 package objects;
 
-import entities.Player;
-import gamestates.PlayingClass;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import entities.Player;
+import gamestates.PlayingClass;
 import levels.LevelClass;
 import main.GameClass;
-import static utilts.ConstantsClass.ObjectConstants.*;
+import static utilts.ConstantsClass.ObjectConstants.BARREL;
+import static utilts.ConstantsClass.ObjectConstants.BLUE_POTION_VALUE;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_HEIGHT;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_LEFT;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_RIGHT;
+import static utilts.ConstantsClass.ObjectConstants.CANNON_WIDTH;
+import static utilts.ConstantsClass.ObjectConstants.CONTAINER_HEIGHT;
+import static utilts.ConstantsClass.ObjectConstants.CONTAINER_WIDTH;
+import static utilts.ConstantsClass.ObjectConstants.POTION_HEIGHT;
+import static utilts.ConstantsClass.ObjectConstants.POTION_WIDTH;
+import static utilts.ConstantsClass.ObjectConstants.RED_POTION;
+import static utilts.ConstantsClass.ObjectConstants.RED_POTION_VALUE;
+import static utilts.ConstantsClass.ObjectConstants.SPIKE_HEIGHT;
+import static utilts.ConstantsClass.ObjectConstants.SPIKE_WIDTH;
+import static utilts.ConstantsClass.Projecttiles.CANNON_BALL_HEIGHT;
+import static utilts.ConstantsClass.Projecttiles.CANNON_BALL_WIDTH;
 import static utilts.HelpMethodsClass.CanCannonSeePlayer;
+import static utilts.HelpMethodsClass.IsProjectileHittingLevel;
 import utilts.LoadSaveClass;
 
 
@@ -18,11 +35,12 @@ public class ObjectManagerClass {
     private PlayingClass playingClass;
     private BufferedImage[][] potionImgs, containerImgs;
     private BufferedImage[] cannonImgs;
-    private BufferedImage spikeImg;
+    private BufferedImage spikeImg, cannonBallImg;
     private ArrayList<PotionClass> potions;
     private ArrayList<GameContainerClass> containers;
     private ArrayList<SpikeClass> spikes;
     private ArrayList<CannonClass> cannons;
+    private ArrayList<ProjecttileClass> projecttiles = new ArrayList<>();
 
     public ObjectManagerClass(PlayingClass playingClass) {
         this.playingClass = playingClass;
@@ -78,6 +96,9 @@ public class ObjectManagerClass {
         containers = new ArrayList<>(newLevel.getContainers());
         spikes = newLevel.getSpikes();
         cannons = newLevel.getCannons();
+
+        // Method clears the projecttiles list, so it doesn't contain old projecttiles and this is used when a new level is loaded
+        projecttiles.clear();
     }
 
     private void loadImgs() {
@@ -102,6 +123,9 @@ public class ObjectManagerClass {
         for (int i = 0; i < cannonImgs.length; i++) {
             cannonImgs[i] = temp.getSubimage(i * 40, 0, 40, 26);
         }
+
+        cannonBallImg = LoadSaveClass.GetSpriteAtlas(LoadSaveClass.CANNON_BALL);
+
     
     }
 
@@ -115,6 +139,25 @@ public class ObjectManagerClass {
                 gc.update();
 
         updateCannons(lvlData, player);
+        updateProjecttiles(lvlData, player);
+
+    }
+
+    private void updateProjecttiles(int[][] lvlData, Player player) {
+        for (ProjecttileClass p : projecttiles) {
+            if (p.isActive()) {
+                p.updatePos();
+
+                    if (p.getHitbox().intersects(player.getHitbox())) {
+                        player.changeHealth(-25);
+                        p.setActive(false);
+
+                    } else if(IsProjectileHittingLevel(p, lvlData)) {
+                            p.setActive(false);
+                    
+                }
+            }
+        }
     }
 
     private boolean isPlayerInRange(CannonClass c, Player player) {
@@ -145,16 +188,25 @@ public class ObjectManagerClass {
                 if (c.getTileY() == player.getTileY()) 
                     if (isPlayerInRange(c, player))
                         if (isPlayerInFrontOfCannon(c, player))
-                            if (CanCannonSeePlayer(lvlData, player.getHitbox(), c.getHitbox(), c.getTileY())) {
-                                shootCannon(c);
-                            }
-                
+                            if (CanCannonSeePlayer(lvlData, player.getHitbox(), c.getHitbox(), c.getTileY())) 
+                                c.setAnimation(true);
                 c.update();
+                if (c.getAniIndex() == 4 && c.getAniTick() == 0){
+                    shootCannon(c);
+                }
+
+             
         }
     }
 
     private void shootCannon (CannonClass c) {
-        c.setAnimation(true);
+      
+
+        int dir = 1;
+        if (c.getObjType() == CANNON_LEFT)
+            dir = -1;
+
+        projecttiles.add(new ProjecttileClass((int)c.getHitbox().x, (int)c.getHitbox().y, dir));
 
     }
 
@@ -163,7 +215,15 @@ public class ObjectManagerClass {
         drawContainers(g, xLvlOffset);
         drawSpikes(g, xLvlOffset);
         drawCannons(g, xLvlOffset);
+        drawProjectiles(g, xLvlOffset);
     }
+
+    private void drawProjectiles(Graphics g, int xLvlOffset) {
+		for (ProjecttileClass p : projecttiles)
+			if (p.isActive())
+				g.drawImage(cannonBallImg, (int) (p.getHitbox().x - xLvlOffset), (int) (p.getHitbox().y), CANNON_BALL_WIDTH, CANNON_BALL_HEIGHT, null);
+
+	}
 
     private void drawCannons(Graphics g, int xLvlOffset) {
         for(CannonClass c : cannons) {
